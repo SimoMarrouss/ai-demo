@@ -1,4 +1,4 @@
-name: Build and Push with Spring Boot Build Image
+name: Build and Push with Spring Boot Build Image Native
 
 on:
   push:

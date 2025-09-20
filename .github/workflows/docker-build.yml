@@ -22,6 +22,11 @@ jobs:
           java-version: '24'
           distribution: 'temurin'
 
+      # Extract project version from Maven pom.xml
+      - name: Get project version
+        id: project_version
+        run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+
       # Log in to Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -33,12 +38,13 @@ jobs:
       - name: Build Spring Boot Docker image
         run: |
           IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/ai-demo
+          VERSION=${{ steps.project_version.outputs.version }}
 
           mvn spring-boot:build-image \
-            -Dspring-boot.build-image.imageName=$IMAGE_NAME:latest
+            -Dspring-boot.build-image.imageName=$IMAGE_NAME:$VERSION
 
           # Tag with commit SHA and latest
-          docker tag $IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:$VERSION $IMAGE_NAME:latest
 
           # Push all tags
           docker push $IMAGE_NAME:latest

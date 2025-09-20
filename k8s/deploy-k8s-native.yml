@@ -5,7 +5,7 @@ metadata:
   labels:
     app: ai-demo-native
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ai-demo-native
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ai-demo
-          image: dockersimo/ai-demo-native:latest
+          image: dockersimo/ai-demo:latest
           ports:
             - containerPort: 8088
           env:

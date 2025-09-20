@@ -42,7 +42,7 @@ jobs:
           IMAGE_NAME=${{ secrets.DOCKER_HUB_USERNAME }}/ai-demo
           VERSION=${{ steps.project_version.outputs.version }}
 
-          mvn -Pnative spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME:$VERSION
+          mvn -Pnative spring-boot:build-image --initialize-at-run-time=org.springframework.ai.chat.client.advisor.api.BaseAdvisor -Dspring-boot.build-image.imageName=$IMAGE_NAME:$VERSION
 
           # Tag with commit SHA and latest
           docker tag $IMAGE_NAME:$VERSION $IMAGE_NAME:latest

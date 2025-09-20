@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-demo-native
+  labels:
+    app: ai-demo-native
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-demo-native
+  template:
+    metadata:
+      labels:
+        app: ai-demo-native
+    spec:
+      containers:
+        - name: ai-demo
+          image: dockersimo/ai-demo-native:latest
+          ports:
+            - containerPort: 8088
+          env:
+            - name: OPEN_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-secret
+                  key: OPEN_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-demo-native-service
+spec:
+  selector:
+    app: ai-demo-native
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8088
+  type: ClusterIP   # change to ClusterIP if using ingress

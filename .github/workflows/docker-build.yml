@@ -1,11 +1,5 @@
 name: Build and Push with Spring Boot Build Image
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
